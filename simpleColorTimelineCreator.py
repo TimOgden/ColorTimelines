@@ -31,6 +31,7 @@ if __name__ == '__main__':
 
 	if filename is not None:
 		num_frames = count_frames(filename)
+		print(num_frames)
 		cap = cv2.VideoCapture(filename)
 		avg_colors = []
 		if desired_width:
@@ -53,17 +54,19 @@ if __name__ == '__main__':
 					np.mean(frame[:,:,0])/255.])
 			
 		cap.release()
+		print('Height:', desired_height)
 		if not desired_height:
 			height = int(.3*len(avg_colors))
 		else:
 			height = desired_height
 		avg_colors = np.array(avg_colors)
 		picture = np.array([avg_colors for x in range(height)])
+		
 		print(picture.shape)
 		plt.figure()
 		plt.title('Color Timeline')
-		seconds_from_frame = [int(frame_num/30) for frame_num in range(0,i,300)]
-		plt.xticks(range(0,i,300), seconds_from_frame)
+		seconds_from_frame = [int(frame_num/30) for frame_num in range(0,num_frames,300)]
+		plt.xticks(range(0,num_frames,300), seconds_from_frame)
 		plt.xlabel('Time into video (s)')
 		plt.yticks([])
 		plt.imshow(picture)
